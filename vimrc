@@ -14,7 +14,7 @@ syntax on
 "--------
 " color scheme
 set background=dark
-color solarized
+color  blackbeauty
 
 " highlight current line
 au WinLeave * set nocursorline nocursorcolumn
@@ -44,7 +44,7 @@ set showcmd                                                       " show typed c
 set title                                                         " show file in titlebar
 set laststatus=2                                                  " use 2 lines for the status bar
 set matchtime=2                                                   " show matching bracket for 0.2 seconds
-set matchpairs+=<:>                                               " specially for html
+"set matchpairs+=<:>                                               " specially for html
 " set relativenumber
 
 " Default Indentation
@@ -109,9 +109,10 @@ hi Tb_VisibleChanged guifg=green ctermbg=252 ctermfg=white
 " easy-motion
 let g:EasyMotion_leader_key = '<Leader>'
 
+
 " Tagbar
 let g:tagbar_left=1
-let g:tagbar_width=30
+let g:tagbar_width=25
 let g:tagbar_autofocus = 1
 let g:tagbar_sort = 0
 let g:tagbar_compact = 1
@@ -121,15 +122,15 @@ if executable('coffeetags')
         \ 'ctagsbin' : 'coffeetags',
         \ 'ctagsargs' : '',
         \ 'kinds' : [
-        \ 'f:functions',
-        \ 'o:object',
+            \ 'f:functions',
+            \ 'o:object',
         \ ],
         \ 'sro' : ".",
         \ 'kind2scope' : {
-        \ 'f' : 'object',
-        \ 'o' : 'object',
+            \ 'f' : 'object',
+            \ 'o' : 'object',
         \ }
-        \ }
+    \ }
 
   let g:tagbar_type_markdown = {
     \ 'ctagstype' : 'markdown',
@@ -142,7 +143,7 @@ endif
 
 " Nerd Tree
 let NERDChristmasTree=0
-let NERDTreeWinSize=30
+let NERDTreeWinSize=25
 let NERDTreeChDirMode=2
 let NERDTreeIgnore=['\~$', '\.pyc$', '\.swp$']
 " let NERDTreeSortOrder=['^__\.py$', '\/$', '*', '\.swp$',  '\~$']
@@ -157,8 +158,25 @@ let NERDCompactSexyComs=1
 " ZenCoding
 let g:user_emmet_expandabbr_key='<C-j>'
 
-" powerline
-"let g:Powerline_symbols = 'fancy'
+" airline
+"if !exists('g:airline_symbols')
+"    let g:airline_symbols = {}
+"endif
+set laststatus=2
+let g:airline#extensions#tabline#enabled=1
+"let g:airline#extensions#tabline#left_sep='▶'
+"let g:airline#extensions#tabline#left_alt_sep='|'
+"let g:airline_left_sep ='▶'
+"let g:airline_right_sep ='◀'
+"let g:airline_symbols.linenr = '␤'
+"let g:airline_symbols.branch = '⎇'
+"let g:airline_symbols.paste = 'Þ'
+"let g:airline_symbols.whitespace = 'Ξ'
+
+" Configure browser for haskell_doc.vim
+let g:haddock_browser = "open"
+let g:haddock_browser_callformat = "%s %s"
+
 
 " NeoComplCache
 let g:neocomplcache_enable_at_startup=1
@@ -205,6 +223,7 @@ nmap <F4> :IndentGuidesToggle<cr>
 nmap  <D-/> :
 nnoremap <leader>a :Ack
 nnoremap <leader>v V`]
+nmap ` :NERDTreeToggle<cr>:Tagbar<cr>
 
 "------------------
 " Useful Functions
@@ -247,12 +266,18 @@ nnoremap ; :
 
 " for macvim
 if has("gui_running")
+    "color eva
+    syntax enable
+    set background=dark
+    colorscheme vividchalk
     set go=aAce  " remove toolbar
-    "set transparency=30
-    set guifont=Monaco:h13
+    set guioptions-=e
+    set transparency=20
+    set guifont=Liberation\ Mono\ for\ Powerline:h13
+    let g:airline_powerline_fonts=1
     set showtabline=2
-    set columns=140
-    set lines=40
+    set columns=130
+    set lines=45
     noremap <D-M-Left> :tabprevious<cr>
     noremap <D-M-Right> :tabnext<cr>
     map <D-1> 1gt
