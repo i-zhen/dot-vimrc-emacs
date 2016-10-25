@@ -46,10 +46,11 @@ Bundle 'majutsushi/tagbar'
 Bundle 'mileszs/ack.vim'
 Bundle 'kien/ctrlp.vim'
 Bundle 'tpope/vim-fugitive'
-Bundle 'Lokaltog/vim-powerline'
+"Bundle 'Lokaltog/vim-powerline'
+Plugin 'bling/vim-airline'
 Bundle 'scrooloose/syntastic'
 Bundle 'bronson/vim-trailing-whitespace'
-
+Bundle 'mattn/webapi-vim'
 "-------------
 " Other Utils
 "-------------
@@ -61,8 +62,8 @@ Bundle 'nvie/vim-togglemouse'
 "----------------------------------------
 "------- web backend ---------
 Bundle '2072/PHP-Indenting-for-VIm'
-"Bundle 'tpope/vim-rails'
-Bundle 'lepture/vim-jinja'
+Bundle 'tpope/vim-rails'
+"Bundle 'lepture/vim-jinja'
 "Bundle 'digitaltoad/vim-jade'
 
 "------- web frontend ----------
@@ -83,23 +84,37 @@ Bundle 'tpope/vim-markdown'
 " Bundle 'tpope/vim-endwise'
 
 "------- Go ----------
-Bundle 'fatih/vim-go'
+"Bundle 'jnwhiteh/vim-golang'
 
 "------- FPs ------
 Bundle 'kien/rainbow_parentheses.vim'
-" Bundle 'wlangstroth/vim-racket'
+Bundle 'wlangstroth/vim-racket'
 " Bundle 'vim-scripts/VimClojure'
 " Bundle 'rosstimson/scala-vim-support'
+Bundle 'lukerandall/haskellmode-vim'
+Bundle 'eagletmt/ghcmod-vim'
+Bundle 'ierton/haskdogs'
+Bundle 'Shougo/vimproc.vim'
+
+
+"-------Rust-------
+Bundle 'rust-lang/rust.vim'
 
 "--------------
 " Color Schemes
+
 "--------------
-Bundle 'rickharris/vim-blackboard'
-Bundle 'altercation/vim-colors-solarized'
-Bundle 'rickharris/vim-monokai'
+Bundle 'derekwyatt/vim-scala'
+Bundle 'morhetz/gruvbox'
 Bundle 'tpope/vim-vividchalk'
-Bundle 'Lokaltog/vim-distinguished'
-Bundle 'chriskempson/vim-tomorrow-theme'
-Bundle 'fisadev/fisa-vim-colorscheme'
+Bundle 'vim-scripts/BlackBeauty'
+Bundle 'vim-scripts/golden.vim'
+Bundle 'vim-scripts/candycode.vim'
+Bundle 'mkarmona/colorsbox'
+Bundle 'jyota/vimColors'
+Bundle 'tomasr/molokai'
+Bundle 'altercation/vim-colors-solarized'
+Bundle 'the-lambda-church/coquille'
+Bundle 'def-lkb/vimbufsync'
 
 filetype plugin indent on     " required!
