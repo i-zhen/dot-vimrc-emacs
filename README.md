@@ -232,6 +232,10 @@ Clone in Mac
 4. Install bundles. Launch vim(ignore the errors and they will disappear after installing needed plugins)and run:
 
         :BundleInstall
+        
+5. Install fonts for Powerline.
+   
+        Please see in https://github.com/powerline/fonts
 
 Thst's it!
 
