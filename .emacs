@@ -1,19 +1,31 @@
+;; for SSL issue: https://github.com/davidswelt/aquamacs-emacs/issues/133
+
 (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin/"))
 (setq exec-path (append exec-path '("/usr/local/bin/")))
 
-(require 'cl)
+(with-eval-after-load 'tls
+    (push "/usr/local/etc/libressl/cert.pem" gnutls-trustfiles))
 
-(set-language-environment 'utf-8)
+(require 'cl)
 
 (when (>= emacs-major-version 24)
   (require 'package)
   (package-initialize)
   (add-to-list
    'package-archives
-   '("melpa" . "http://stable.melpa.org/packages/")
+   '("gnu" . "http://elpa.gnu.org/packages/")
    t))
 
+;;(package-install 'flycheck)
+;;(package-install 'flymake-hlint)
 (global-linum-mode t)
+;;(global-flycheck-mode)
+
+;;(require 'flymake-hlint) 
+;;(add-hook 'haskell-mode-hook 'flymake-hlint-load)
+
+(package-install 'exec-path-from-shell)
+(exec-path-from-shell-initialize)
 
 (defvar prelude-packages
   '(haskell-mode)
@@ -77,3 +89,4 @@
                 'face face)))
 
 (setq linum-format 'linum-highlight-current-line)
+
