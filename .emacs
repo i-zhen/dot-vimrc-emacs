@@ -1,23 +1,19 @@
+(setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin/"))
+(setq exec-path (append exec-path '("/usr/local/bin/")))
+
 (require 'cl)
+
+(set-language-environment 'utf-8)
 
 (when (>= emacs-major-version 24)
   (require 'package)
   (package-initialize)
   (add-to-list
    'package-archives
-   '("gnu" . "http://elpa.gnu.org/packages/")
+   '("melpa" . "http://stable.melpa.org/packages/")
    t))
 
-(package-install 'flycheck)
-(package-install 'flymake-hlint)
 (global-linum-mode t)
-(global-flycheck-mode)
-
-(require 'flymake-hlint) 
-(add-hook 'haskell-mode-hook 'flymake-hlint-load)
-
-(package-install 'exec-path-from-shell)
-(exec-path-from-shell-initialize)
 
 (defvar prelude-packages
   '(haskell-mode)
@@ -48,7 +44,6 @@
 ))
 
 (add-hook 'haskell-mode-hook 'my-haskell-hook)
-
 
 (require 'linum)
 
