@@ -80,6 +80,17 @@
 ;; use Shift-arrow keys to move between windows
 (windmove-default-keybindings)
 
+(require 'haskell-mode)
+(define-key haskell-mode-map "\C-ch" 'haskell-hoogle)
+;(setq haskell-hoogle-command "hoogle")
+
+;; use M-. on a name in a Haskell buffer which will jump directly to its definition
+(setq haskell-tags-on-save t)
+
+;; M-x speedbar
+(require 'speedbar)
+(speedbar-add-supported-extension ".hs")
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
