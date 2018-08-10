@@ -1,4 +1,11 @@
+;; stack install happy intero apply-refact hlint stylish-haskell hasktags hoogle
+
 ;; for SSL issue: https://github.com/davidswelt/aquamacs-emacs/issues/133
+;; $ brew install libressl
+;; $ echo $(brew --prefix)/etc/libressl/cert.pem
+;; /usr/local/etc/libressl/cert.pem
+
+(set-frame-size (selected-frame) 140 55)
 
 (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin/"))
 (setq exec-path (append exec-path '("/usr/local/bin/")))
@@ -6,23 +13,22 @@
 (with-eval-after-load 'tls
     (push "/usr/local/etc/libressl/cert.pem" gnutls-trustfiles))
 
+(global-linum-mode t)
+
 (require 'cl)
 
 (when (>= emacs-major-version 24)
   (require 'package)
-  (package-initialize)
   (add-to-list
    'package-archives
-   '("gnu" . "http://elpa.gnu.org/packages/")
-   t))
+   '("melpa" . "http://melpa.org/packages/") t))
 
-;;(package-install 'flycheck)
-;;(package-install 'flymake-hlint)
-(global-linum-mode t)
-;;(global-flycheck-mode)
+(package-initialize)
+(package-refresh-contents)
 
-;;(require 'flymake-hlint) 
-;;(add-hook 'haskell-mode-hook 'flymake-hlint-load)
+;; Install Intero
+(package-install 'intero)
+;;(add-hook 'haskell-mode-hook 'intero-mode)
 
 (package-install 'exec-path-from-shell)
 (exec-path-from-shell-initialize)
@@ -51,11 +57,38 @@
 (defun my-haskell-hook ()
   (progn
     (interactive-haskell-mode)
+    (intero-mode)
     (haskell-doc-mode)
     (haskell-indentation-mode)
 ))
 
 (add-hook 'haskell-mode-hook 'my-haskell-hook)
+
+(intero-global-mode 1)
+
+(with-eval-after-load 'intero
+  (flycheck-add-next-checker 'intero '(warning . haskell-hlint))
+)
+
+;; shortcut to set intero targets: Alt-s Alt-t 
+(global-set-key (kbd "M-s M-t") #'intero-targets)
+
+;; install stack mode with shortcut: Alt-s Alt-s
+(package-install 'hasky-stack)
+(global-set-key (kbd "M-s M-s") #'hasky-stack-execute)
+
+;; use Shift-arrow keys to move between windows
+(windmove-default-keybindings)
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(haskell-stylish-on-save t)
+ '(package-selected-packages
+   (quote
+    (hasky-stack exec-path-from-shell intero haskell-mode flycheck company))))
 
 (require 'linum)
 
@@ -89,4 +122,3 @@
                 'face face)))
 
 (setq linum-format 'linum-highlight-current-line)
-
