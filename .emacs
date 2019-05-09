@@ -1,10 +1,15 @@
+;; ____________________________________________________________________________
+;; Aquamacs custom-file warning:
+;; Warning: After loading this .emacs file, Aquamacs will also load
+;; customizations from `custom-file' (customizations.el). Any settings there
+;; will override those made here.
+;; Consider moving your startup settings to the Preferences.el file, which
+;; is loaded after `custom-file':
+;; ~/Library/Preferences/Aquamacs Emacs/Preferences
+;; _____________________________________________________________________________
+
 ;; stack install happy intero apply-refact hlint stylish-haskell hasktags hoogle
-
 ;; for SSL issue: https://github.com/davidswelt/aquamacs-emacs/issues/133
-;; $ brew install libressl
-;; $ echo $(brew --prefix)/etc/libressl/cert.pem
-;; /usr/local/etc/libressl/cert.pem
-
 ;; Prerequisite - begin
 
 (defun hlint-refactor-call-process-region-checked (start end program &optional args)
@@ -86,11 +91,12 @@ ARGS specifies additional arguments that are passed to hlint."
    '("melpa" . "http://melpa.org/packages/") t))
 
 (package-initialize)
-(package-refresh-contents)
+;; (package-refresh-contents)
 
 ;; Install Intero
 (package-install 'intero)
 ;;(add-hook 'haskell-mode-hook 'intero-mode)
+
 
 (package-install 'exec-path-from-shell)
 (exec-path-from-shell-initialize)
@@ -162,7 +168,7 @@ ARGS specifies additional arguments that are passed to hlint."
  '(haskell-stylish-on-save t)
  '(package-selected-packages
    (quote
-    (hasky-stack exec-path-from-shell intero haskell-mode flycheck company))))
+    (auto-complete merlin utop tuareg hasky-stack exec-path-from-shell intero haskell-mode flycheck company))))
 
 (require 'linum)
 
@@ -196,3 +202,53 @@ ARGS specifies additional arguments that are passed to hlint."
                 'face face)))
 
 (setq linum-format 'linum-highlight-current-line)
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+
+;; install OCaml support
+(package-install 'tuareg)
+(package-install 'utop)
+(package-install 'merlin)
+(package-install 'auto-complete)
+
+(add-hook 'tuareg-mode-hook 'tuareg-imenu-set-imenu)
+(setq auto-mode-alist
+      (append '(("\\.ml[ily]?$" . tuareg-mode)
+                ("\\.topml$" . tuareg-mode))
+              auto-mode-alist))
+(autoload 'utop-setup-ocaml-buffer "utop" "Toplevel for OCaml" t)
+(add-hook 'tuareg-mode-hook 'utop-setup-ocaml-buffer)
+(add-hook 'tuareg-mode-hook 'merlin-mode)
+(setq merlin-use-auto-complete-mode t)
+(setq merlin-error-after-save nil)
+
+;; -- merlin setup ---------------------------------------
+
+(setq opam-share (substring (shell-command-to-string "opam config var share") 0 -1))
+(add-to-list 'load-path (concat opam-share "/emacs/site-lisp"))
+(require 'merlin)
+
+;; Enable Merlin for ML buffers
+(add-hook 'tuareg-mode-hook 'merlin-mode)
+
+;; So you can do it on a mac, where `C-<up>` and `C-<down>` are used
+;; by spaces.
+(define-key merlin-mode-map
+  (kbd "C-c <left>") 'merlin-type-enclosing-go-up)
+(define-key merlin-mode-map
+  (kbd "C-c <right>") 'merlin-type-enclosing-go-down)
+(set-face-background 'merlin-type-face "#88FF44")
+
+;; -- enable auto-complete -------------------------------
+;; Not required, but useful along with merlin-mode
+(require 'auto-complete)
+(add-hook 'tuareg-mode-hook 'auto-complete-mode)
+(setq merlin-ac-setup 't)
+
+;; Replace tuareg by ocp-indent
+(setq opam-share (substring (shell-command-to-string "opam config var share") 0 -1))
+(load-file (concat opam-share "/emacs/site-lisp/ocp-indent.el"))
