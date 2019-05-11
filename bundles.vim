@@ -12,6 +12,7 @@ Bundle 'gmarik/vundle'
 " Code Completions
 "------------------
 Bundle 'Shougo/neocomplcache'
+Bundle 'Shougo/neocomplete'
 Bundle 'mattn/emmet-vim'
 Bundle 'Raimondi/delimitMate'
 Bundle 'ervandew/supertab'
@@ -25,7 +26,7 @@ Bundle 'tomtom/tlib_vim'
 "-----------------
 " Fast navigation
 "-----------------
-Bundle 'edsono/vim-matchit'
+Bundle 'adelarsq/vim-matchit'
 Bundle 'Lokaltog/vim-easymotion'
 
 "--------------
@@ -92,13 +93,15 @@ Bundle 'wlangstroth/vim-racket'
 " Bundle 'vim-scripts/VimClojure'
 " Bundle 'rosstimson/scala-vim-support'
 Bundle 'lukerandall/haskellmode-vim'
-Bundle 'eagletmt/ghcmod-vim'
 Bundle 'ierton/haskdogs'
 Bundle 'Shougo/vimproc.vim'
 
 
 "-------Rust-------
 Bundle 'rust-lang/rust.vim'
+
+"-------OCaml-------
+Bundle 'avsm/ocaml-annot'
 
 "--------------
 " Color Schemes
@@ -116,5 +119,6 @@ Bundle 'tomasr/molokai'
 Bundle 'altercation/vim-colors-solarized'
 Bundle 'the-lambda-church/coquille'
 Bundle 'def-lkb/vimbufsync'
+Bundle 'liuchengxu/space-vim-dark'
 
 filetype plugin indent on     " required!

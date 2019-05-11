@@ -14,7 +14,7 @@ syntax on
 "--------
 " color scheme
 set background=dark
-color  blackbeauty
+color  space-vim-dark
 
 " highlight current line
 au WinLeave * set nocursorline nocursorcolumn
@@ -55,7 +55,7 @@ set softtabstop=4   " backspace
 set shiftwidth=4    " indent width
 " set textwidth=79
 " set smarttab
-set expandtab       " expand tab to space
+" set expandtab       " expand tab to space
 
 autocmd FileType php setlocal tabstop=2 shiftwidth=2 softtabstop=2 textwidth=120
 autocmd FileType ruby setlocal tabstop=2 shiftwidth=2 softtabstop=2 textwidth=120
@@ -264,20 +264,41 @@ nnoremap ; :
 :command Qa qa
 :command QA qa
 
+" Vim needs to be built with Python scripting support, and must be
+" able to find Merlin's executable on PATH.
+if executable('ocamlmerlin') && has('python')
+  let s:ocamlmerlin = substitute(system('opam config var share'), '\n$', '', '''') . "/merlin"
+  execute "set rtp+=".s:ocamlmerlin."/vim"
+  execute "set rtp+=".s:ocamlmerlin."/vimbufsync"
+endif
+
+let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
+execute "set rtp+=" . g:opamshare . "/merlin/vim"
+
+if !exists('g:neocomplcache_force_omni_patterns')
+    let g:neocomplcache_force_omni_patterns = {}
+endif
+	let g:neocomplcache_force_omni_patterns.ocaml = '[^. *\t]\.\w*\|\h\w*|#'
+
+" OCP-indent
+autocmd FileType ocaml execute "set rtp+=" . substitute(system('opam config var share'), '\n$', '', '''') . "/ocp-indent/vim/indent/ocaml.vim"
+
 " for macvim
 if has("gui_running")
     "color eva
     syntax enable
     set background=dark
-    colorscheme vividchalk
+    colorscheme candycode
+    set list
+    set listchars=tab:\|\ 
     set go=aAce  " remove toolbar
     set guioptions-=e
     set transparency=20
     set guifont=Liberation\ Mono\ for\ Powerline:h13
     let g:airline_powerline_fonts=1
     set showtabline=2
-    set columns=130
-    set lines=45
+    set columns=145
+    set lines=50
     noremap <D-M-Left> :tabprevious<cr>
     noremap <D-M-Right> :tabnext<cr>
     map <D-1> 1gt
