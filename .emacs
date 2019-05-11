@@ -209,50 +209,6 @@ ARGS specifies additional arguments that are passed to hlint."
  ;; If there is more than one, they won't work right.
  )
 
-;; cd ~/.emacs.d
-;; git clone https://github.com/themattchan/liquid-tip.el.git
-
-(add-to-list 'load-path "~/.emacs.d/liquid-tip.el/")
-(package-install 'liquid-types)
-(package-install 'flycheck-color-mode-line)
-
-;; Global Flycheck
-(require 'flycheck)
-(global-flycheck-mode)
-
-;; Rerun check on idle and save
-(setq flycheck-check-syntax-automatically
-'(mode-enabled idle-change save))
-
-;; Configure flycheck-liquidhs, if you haven't already
-(add-hook 'haskell-mode-hook
-          '(lambda () (flycheck-select-checker 'haskell-liquid)))
-
-(add-hook 'literate-haskell-mode-hook
-          '(lambda () (flycheck-select-checker 'haskell-liquid)))
-
-(require 'liquid-types)
-
-;; Toggle minor mode on entering Haskell mode.
-(add-hook 'haskell-mode-hook
-          '(lambda () (liquid-types-mode)))
-(add-hook 'literate-haskell-mode-hook
-	  '(lambda () (liquid-types-mode)))
-
-(add-hook 'flycheck-mode-hook
-      (lambda () (require 'flycheck-liquidhs)
-        (flycheck-add-next-checker 'haskell-ghc 'haskell-hlint)
-        (flycheck-add-next-checker 'haskell-hlint 'haskell-liquid)))
-
-(require 'flycheck-color-mode-line)
-
-(eval-after-load "flycheck"
-  '(add-hook 'flycheck-mode-hook 'flycheck-color-mode-line-mode))
-
-(set-face-attribute 'flycheck-error nil
-                    :foreground "red"
-	                  :background "pink")
-
 ;; install OCaml support
 (package-install 'tuareg)
 (package-install 'utop)
