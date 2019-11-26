@@ -8,7 +8,7 @@
 ;; ~/Library/Preferences/Aquamacs Emacs/Preferences
 ;; _____________________________________________________________________________
 
-;; stack install happy intero apply-refact hlint stylish-haskell hasktags hoogle
+;; stack install happy apply-refact hlint stylish-haskell hasktags hoogle
 ;; for SSL issue: https://github.com/davidswelt/aquamacs-emacs/issues/133
 ;; Prerequisite - begin
 
@@ -88,14 +88,11 @@ ARGS specifies additional arguments that are passed to hlint."
   (require 'package)
   (add-to-list
    'package-archives
-   '("melpa" . "http://melpa.org/packages/") t))
+   '("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/") t))
 
 (package-initialize)
 ;; (package-refresh-contents)
 
-;; Install Intero
-(package-install 'intero)
-;;(add-hook 'haskell-mode-hook 'intero-mode)
 
 
 (package-install 'exec-path-from-shell)
@@ -122,25 +119,58 @@ ARGS specifies additional arguments that are passed to hlint."
           (package-install p)))))
 
 ;; Haskell
+(package-install 'flycheck-color-mode-line)
+(package-install 'flycheck-pos-tip)
+(package-install 'seti-theme)
+
+(load-theme 'seti t)
+
+;; COMPLETION
+
+(add-hook 'after-init-hook 'global-company-mode)
+
+;shortcut for completion
+(add-hook 'after-init-hook 'global-company-mode)
+(global-set-key (kbd "C-c w") 'company-complete)
+
+;after how many letters do we want to get completion tips? 1 means from the first letter
+(setq company-minimum-prefix-length 1)
+(setq company-dabbrev-downcase 0)
+;after how long of no keys should we get the completion tips? in seconds
+(setq company-idle-delay 0.2)
+
+;; ERRORS ON THE FLY
+
+(require 'flycheck)
+(add-hook 'after-init-hook #'global-flycheck-mode)
+(require 'flycheck-color-mode-line)
+
+;tooltip errors
+(require 'flycheck-pos-tip)
+(with-eval-after-load 'flycheck
+  (flycheck-pos-tip-mode))
+
+(setq flycheck-pos-tip-timeout 60)
+
+(with-eval-after-load 'flycheck
+  (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc)))
+
+(require 'flycheck-color-mode-line)
+(add-hook 'flycheck-mode-hook
+  'flycheck-color-mode-line-mode)
+
+(global-set-key [f9] 'flycheck-list-errors)
+
 (defun my-haskell-hook ()
   (progn
     (hlint-refactor-mode)
     (interactive-haskell-mode)
-    (intero-mode)
     (haskell-doc-mode)
     (haskell-indentation-mode)
 ))
 
 (add-hook 'haskell-mode-hook 'my-haskell-hook)
 
-(intero-global-mode 1)
-
-(with-eval-after-load 'intero
-  (flycheck-add-next-checker 'intero '(warning . haskell-hlint))
-)
-
-;; shortcut to set intero targets: Alt-s Alt-t 
-(global-set-key (kbd "M-s M-t") #'intero-targets)
 
 ;; install stack mode with shortcut: Alt-s Alt-s
 (package-install 'hasky-stack)
@@ -168,7 +198,7 @@ ARGS specifies additional arguments that are passed to hlint."
  '(haskell-stylish-on-save t)
  '(package-selected-packages
    (quote
-    (auto-complete merlin utop tuareg hasky-stack exec-path-from-shell intero haskell-mode flycheck company))))
+    (auto-complete merlin utop tuareg hasky-stack exec-path-from-shell haskell-mode flycheck company))))
 
 (require 'linum)
 
