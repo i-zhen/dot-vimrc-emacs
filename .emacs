@@ -121,9 +121,9 @@ ARGS specifies additional arguments that are passed to hlint."
 ;; Haskell
 (package-install 'flycheck-color-mode-line)
 (package-install 'flycheck-pos-tip)
-(package-install 'seti-theme)
+(package-install 'doom-themes)
 
-(load-theme 'seti t)
+(load-theme 'doom-nord-light t)
 
 ;; COMPLETION
 
