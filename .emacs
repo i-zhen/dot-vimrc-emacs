@@ -122,27 +122,26 @@ ARGS specifies additional arguments that are passed to hlint."
 (package-install 'flycheck-color-mode-line)
 (package-install 'flycheck-pos-tip)
 (package-install 'doom-themes)
+(package-install 'dante)
 
 (load-theme 'doom-nord-light t)
 
 ;; COMPLETION
 
-(add-hook 'after-init-hook 'global-company-mode)
-
+;; (add-hook 'after-init-hook 'global-company-mode)
 ;shortcut for completion
-(add-hook 'after-init-hook 'global-company-mode)
 (global-set-key (kbd "C-c w") 'company-complete)
 
 ;after how many letters do we want to get completion tips? 1 means from the first letter
 (setq company-minimum-prefix-length 1)
 (setq company-dabbrev-downcase 0)
 ;after how long of no keys should we get the completion tips? in seconds
-(setq company-idle-delay 0.2)
+(setq company-idle-delay 0.1)
 
 ;; ERRORS ON THE FLY
 
 (require 'flycheck)
-(add-hook 'after-init-hook #'global-flycheck-mode)
+;; (add-hook 'after-init-hook 'global-flycheck-mode)
 (require 'flycheck-color-mode-line)
 
 ;tooltip errors
@@ -161,15 +160,31 @@ ARGS specifies additional arguments that are passed to hlint."
 
 (global-set-key [f9] 'flycheck-list-errors)
 
+
+(package-install 'flymake-hlint)
+(require 'flymake-hlint)
+
 (defun my-haskell-hook ()
   (progn
     (hlint-refactor-mode)
     (interactive-haskell-mode)
     (haskell-doc-mode)
     (haskell-indentation-mode)
+	(dante-mode)
+	(flycheck-mode)
+	(flymake-hlint-load)
+	(company-mode)
 ))
 
 (add-hook 'haskell-mode-hook 'my-haskell-hook)
+(setq dante-repl-command-line '("stack" "repl" dante-target))
+;; Put following line in your project: .dir-locals.el
+;; ((nil . ((dante-methods . (stack)))))
+
+;; (setq flycheck-check-syntax-automatically '(save mode-enabled))
+;; (add-hook 'dante-mode-hook
+;;   '(lambda () (flycheck-add-next-checker 'haskell-dante
+;;                '(warning . haskell-hlint))))
 
 
 ;; install stack mode with shortcut: Alt-s Alt-s
@@ -282,3 +297,24 @@ ARGS specifies additional arguments that are passed to hlint."
 ;; Replace tuareg by ocp-indent
 (setq opam-share (substring (shell-command-to-string "opam config var share") 0 -1))
 (load-file (concat opam-share "/emacs/site-lisp/ocp-indent.el"))
+
+;; Scheme
+
+(package-install 'paredit)
+(package-install 'geiser)
+
+(require 'geiser)
+(require 'paredit)
+
+(setq scheme-program-name "chez")
+(setq geiser-chez-binary "chez")
+(setq geiser-active-implementations '(chez))
+;; (setq geiser-repl-use-other-window '(nil))
+
+(autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
+(add-hook 'emacs-lisp-mode-hook       'enable-paredit-mode)
+(add-hook 'eval-expression-minibuffer-setup-hook 'enable-paredit-mode)
+(add-hook 'ielm-mode-hook             'enable-paredit-mode)
+(add-hook 'lisp-mode-hook             'enable-paredit-mode)
+(add-hook 'lisp-interaction-mode-hook 'enable-paredit-mode)
+(add-hook 'scheme-mode-hook           'enable-paredit-mode)
