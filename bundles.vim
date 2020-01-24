@@ -92,7 +92,6 @@ Bundle 'kien/rainbow_parentheses.vim'
 Bundle 'wlangstroth/vim-racket'
 " Bundle 'vim-scripts/VimClojure'
 " Bundle 'rosstimson/scala-vim-support'
-Bundle 'lukerandall/haskellmode-vim'
 Bundle 'ierton/haskdogs'
 Bundle 'Shougo/vimproc.vim'
 
