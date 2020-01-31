@@ -1,4 +1,4 @@
-;; ____________________________________________________________________________
+;; _____________________________________________________________________________
 ;; Aquamacs custom-file warning:
 ;; Warning: After loading this .emacs file, Aquamacs will also load
 ;; customizations from `custom-file' (customizations.el). Any settings there
@@ -11,19 +11,70 @@
 ;; stack install happy apply-refact hlint stylish-haskell hasktags hoogle
 ;; for SSL issue: https://github.com/davidswelt/aquamacs-emacs/issues/133
 
+(set-frame-size (selected-frame) 140 55)
+
+(setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin/"))
+(setq exec-path (append exec-path '("/usr/local/bin/")))
+
+(with-eval-after-load 'tls
+    (push "/usr/local/etc/libressl/cert.pem" gnutls-trustfiles))
+
+(global-linum-mode t)
+
+(require 'cl)
+
+(when (>= emacs-major-version 24)
+  (require 'package)
+  (add-to-list
+   'package-archives
+   '("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/") t))
+
+(package-initialize)
+;; (package-refresh-contents)
+
+(package-install 'doom-themes)
+(load-theme 'doom-nord-light t)
+
+;;; dired-sidebar begin
+(package-install 'use-package)
+(package-install 'all-the-icons)
+(package-install 'all-the-icons-dired)
+(require 'all-the-icons)
+;; run `M-x all-the-icons-install-fonts` at first time while installed the icons
+(require 'all-the-icons-dired)
+
+(use-package dired-sidebar
+  :bind (("C-x C-n" . dired-sidebar-toggle-sidebar))
+  :ensure t
+  :commands (dired-sidebar-toggle-sidebar)
+  :init
+  (add-hook 'dired-sidebar-mode-hook
+            (lambda ()
+              (unless (file-remote-p default-directory)
+                (auto-revert-mode))))
+  :config
+  (push 'toggle-window-split dired-sidebar-toggle-hidden-commands)
+  (push 'rotate-windows dired-sidebar-toggle-hidden-commands)
+
+  (setq dired-sidebar-subtree-line-prefix "__")
+  (setq dired-sidebar-use-term-integration t)
+  (setq dired-sidebar-use-custom-font t))
+
+(add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
+;;; dired-sidebar end
 
 (if (display-graphic-p)
     (progn
       (setq initial-frame-alist
             '(
-              (tool-bar-lines . 1)
+              (tool-bar-lines . 0)
               (width . 106) ; chars
               (height . 40) ; lines
               (left . 50)
               (top . 50)))
       (setq default-frame-alist
             '(
-              (tool-bar-lines . 1)
+              (tool-bar-lines . 0)
               (width . 106)
               (height . 40)
               (left . 50)
@@ -32,6 +83,11 @@
     (setq initial-frame-alist '( (tool-bar-lines . 1)))
     (setq default-frame-alist '( (tool-bar-lines . 1)))))
 
+(set-scroll-bar-mode nil)
+
+;; M-x speedbar
+(require 'speedbar)
+(speedbar-add-supported-extension ".hs")
 
 ;; Prerequisite - begin
 
@@ -95,29 +151,6 @@ ARGS specifies additional arguments that are passed to hlint."
 
 ;;Pre - end
 
-(set-frame-size (selected-frame) 140 55)
-
-(setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin/"))
-(setq exec-path (append exec-path '("/usr/local/bin/")))
-
-(with-eval-after-load 'tls
-    (push "/usr/local/etc/libressl/cert.pem" gnutls-trustfiles))
-
-(global-linum-mode t)
-
-(require 'cl)
-
-(when (>= emacs-major-version 24)
-  (require 'package)
-  (add-to-list
-   'package-archives
-   '("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/") t))
-
-(package-initialize)
-;; (package-refresh-contents)
-
-
-
 (package-install 'exec-path-from-shell)
 (exec-path-from-shell-initialize)
 
@@ -144,10 +177,7 @@ ARGS specifies additional arguments that are passed to hlint."
 ;; Haskell
 (package-install 'flycheck-color-mode-line)
 (package-install 'flycheck-pos-tip)
-(package-install 'doom-themes)
 (package-install 'dante)
-
-(load-theme 'doom-nord-light t)
 
 ;; COMPLETION
 
@@ -223,10 +253,6 @@ ARGS specifies additional arguments that are passed to hlint."
 
 ;; use M-. on a name in a Haskell buffer which will jump directly to its definition
 (setq haskell-tags-on-save t)
-
-;; M-x speedbar
-(require 'speedbar)
-(speedbar-add-supported-extension ".hs")
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
