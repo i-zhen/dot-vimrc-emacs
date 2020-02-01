@@ -35,33 +35,19 @@
 (package-install 'doom-themes)
 (load-theme 'doom-nord-light t)
 
-;;; dired-sidebar begin
+;;; neotree begin
 (package-install 'use-package)
 (package-install 'all-the-icons)
-(package-install 'all-the-icons-dired)
 (require 'all-the-icons)
 ;; run `M-x all-the-icons-install-fonts` at first time while installed the icons
-(require 'all-the-icons-dired)
 
-(use-package dired-sidebar
-  :bind (("C-x C-n" . dired-sidebar-toggle-sidebar))
+(use-package neotree
+  :bind (("C-x C-n" . neotree-toggle))
   :ensure t
-  :commands (dired-sidebar-toggle-sidebar)
-  :init
-  (add-hook 'dired-sidebar-mode-hook
-            (lambda ()
-              (unless (file-remote-p default-directory)
-                (auto-revert-mode))))
+  :commands (neotree-toggle)
   :config
-  (push 'toggle-window-split dired-sidebar-toggle-hidden-commands)
-  (push 'rotate-windows dired-sidebar-toggle-hidden-commands)
-
-  (setq dired-sidebar-subtree-line-prefix "__")
-  (setq dired-sidebar-use-term-integration t)
-  (setq dired-sidebar-use-custom-font t))
-
-(add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
-;;; dired-sidebar end
+  (setq neo-theme (if (display-graphic-p) 'icons 'arrow)))
+;;; neotree end
 
 (if (display-graphic-p)
     (progn
