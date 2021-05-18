@@ -354,6 +354,7 @@ ARGS specifies additional arguments that are passed to hlint."
 (add-hook 'lisp-interaction-mode-hook 'enable-paredit-mode)
 (add-hook 'scheme-mode-hook           'enable-paredit-mode)
 
+;; gem install taskjuggler
 ;; (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
 ;; M-x package-refresh-contents
 ;; M-x package-install
