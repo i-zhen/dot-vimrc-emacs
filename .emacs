@@ -353,3 +353,9 @@ ARGS specifies additional arguments that are passed to hlint."
 (add-hook 'lisp-mode-hook             'enable-paredit-mode)
 (add-hook 'lisp-interaction-mode-hook 'enable-paredit-mode)
 (add-hook 'scheme-mode-hook           'enable-paredit-mode)
+
+;; (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+;; M-x package-refresh-contents
+;; M-x package-install
+;; org-plus-contrib
+;; (require 'org-plus-contrib)
