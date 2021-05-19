@@ -131,6 +131,13 @@
 # leaves type: project, annual, special, sick, unpaid, holiday, unemployed
 
 #+BEGIN_COMMENT
+columns: one of 'activetasks', 'annualleave', 'annualleavebalance', 'annualleavelist', 'alert', 'alertmessages', 'alertsummaries', 'alerttrend', 'balance', 'bsi', 'chart',
+'children', 'closedtasks', 'competitorcount', 'competitors', 'complete', 'completed', 'criticalness', 'cost', 'daily', 'directreports', 'duration', 'duties', 'efficiency',
+'effort', 'effortdone', 'effortleft', 'email', 'end', 'flags', 'followers', 'freetime', 'freework', 'fte', 'gauge', 'headcount', 'hierarchindex', 'hourly', 'id', 'index',
+'inputs', 'journal', 'journal_sub', 'journalmessages', 'journalsummaries', 'line', 'managers', 'maxend', 'maxstart', 'minend', 'minstart', 'monthly', 'no', 'name', 'note',
+'opentasks', 'pathcriticalness', 'precursors', 'priority', 'quarterly', 'rate', 'reports', 'resources', 'responsible', 'revenue', 'scenario', 'scheduling', 'seqno',
+'sickleave', 'specialleave', 'start', 'status', 'targets', 'turnover', 'wbs', 'unpaidleave', 'weekly', 'yearly'
+
 ;; put following setting into your .emacs file
 ;; (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
 ;; M-x package-refresh-contents
