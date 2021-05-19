@@ -1,0 +1,201 @@
+#+PROPERTY: Effort_ALL 2d 5d 10d 20d 30d 35d 50d
+#+PROPERTY: allocate_ALL dev doc test
+#+COLUMNS: %30ITEM(Task) %Effort %allocate %BLOCKER %ORDERED
+
+* C-like语言能力提升                                    :taskjuggler_project:
+  :PROPERTIES:
+  :start: 2021-5-10
+  :END:
+
+** Research Review: 文献与源码理解、调研
+   :PROPERTIES:
+   :Effort:   3d
+   :task_id:  review
+   :priority: 1000
+   :allocate: doc
+   :END:
+
+** Project Proposal: 方案、架构、风险
+   :PROPERTIES:
+   :Effort:   1d
+   :task_id:  proposal
+   :priority: 800
+   :BLOCKER:  review
+   :allocate: doc
+   :END:
+
+** Software Development
+   :PROPERTIES:
+   :ORDERED:  t
+   :BLOCKER:  previous-sibling
+   :priority: 1000
+   :allocate: dev
+   :END:
+
+*** ObjC2COREF POC
+    :PROPERTIES:
+    :Effort:   11d
+    :task_id:  objc2coref_poc
+    :END:
+
+*** ObjC2COREF Stable
+    :PROPERTIES:
+    :Effort:   21d
+    :task_id:  objc2coref_stable
+    :END:
+
+*** ObjC2COREF with >20 rule
+    :PROPERTIES:
+    :Effort:   20d
+    :task_id:  objc2coref_rule
+    :END:
+
+*** AOSP C++2COREF with >10 rules
+    :PROPERTIES:
+    :Effort:   11d
+    :task_id:  cpp2coref
+    :END:
+
+** Software Evaluation
+   :PROPERTIES:
+   :ORDERED:  t
+   :BLOCKER:  objc2coref
+   :allocate: test
+   :END:
+*** Testing
+    :PROPERTIES:
+    :Effort:   25d
+    :BLOCKER:  proposal
+    :task_id:  test
+    :END:
+
+*** Evaluation
+    :PROPERTIES:
+    :Effort:   25d
+    :task_id:  eval
+    :END:
+
+** Milestones
+***  给个调研报告；OC to COREF POC 方案
+    :PROPERTIES:
+    :task_id:  start
+    :BLOCKER:  proposal
+    :END:
+
+*** 跑通OC to COREF POC，跑通5个规则；给一个OC to COREF的长期方案，确定测试方案
+    :PROPERTIES:
+    :BLOCKER:  objc2coref_poc
+    :END:
+
+*** OC 长期方案公测上线，支持简单信息提取
+    :PROPERTIES:
+    :BLOCKER:  objc2coref_stable
+    :END:
+
+*** OC For COREF 1.0的设计，开发>20条规则，验证通过。使能Sparrow平台；AOSP C++ COREF PoC完成
+    :PROPERTIES:
+    :BLOCKER:  objc2coref_rule
+    :END:
+
+*** AOSP C++ to COREF 0.1的设计，开发>10条规则，验证通过，使能Sparrow平台 + OC to IR 的转换
+    :PROPERTIES:
+    :BLOCKER:   cpp2coref
+    :END:
+
+    
+* Resources                                         :taskjuggler_resource:
+** Developers
+   :PROPERTIES:
+   :resource_id: dev
+   :END:
+*** Zhen Yi
+    :PROPERTIES:
+    :resource_id: zhenyi
+    :efficiency: 0.5
+    :END:
+
+** Others
+*** ZY for Doc
+    :PROPERTIES:
+    :resource_id: doc
+    :limits:   { dailymax 2.0h }
+    :END:
+*** ZT for Test
+    :PROPERTIES:
+    :resource_id: test
+     :efficiency: 0.5
+    :END:
+
+# :leaveallowances: annual 2021-05-20 10d
+# :leaves: annual 2021-10-08 +1d
+# leaves type: project, annual, special, sick, unpaid, holiday, unemployed
+
+#+BEGIN_COMMENT
+;; put following setting into your .emacs file
+;; (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+;; M-x package-refresh-contents
+;; M-x package-install
+;; org-plus-contrib
+;; (require 'org-plus-contrib)
+
+;; you can find follow setting in ~/.emacs.d/elpa/org-plus-contrib-YYMMDD/ox-taskjuggler.el
+
+(setq org-taskjuggler-default-project-duration 1000)
+
+(setq org-taskjuggler-default-reports
+  '("textreport report \"Plan\" {
+  formats html
+  header '== %title =='
+  center -8<-
+    [#Plan Plan] | [#Resource_Allocation Resource Allocation]
+    ----
+    === Plan ===
+    <[report id=\"plan\"]>
+    ----
+    === Resource Allocation ===
+    <[report id=\"resourceGraph\"]>
+  ->8-
+}
+# A traditional Gantt chart with a project overview.
+taskreport plan \"\" {
+  headline \"Project Plan\"
+  columns bsi, name {width 350}, start, end, effort, chart {scale week width 800}
+  loadunit shortauto
+  hideresource 1
+}
+# A graph showing resource allocation. It identifies whether each
+# resource is under- or over-allocated for.
+resourcereport resourceGraph \"\" {
+  headline \"Resource Allocation Graph\"
+  columns no, name, effort, annualleave, priority, sickleave, weekly {width 700}
+  loadunit shortauto
+  hidetask ~(isleaf() & isleaf_())
+  sorttasks plan.start.up
+}")
+)
+
+
+(setq org-taskjuggler-valid-resource-attributes
+  '(limits vacation shift booking efficiency journalentry rate
+	   workinghours flags leaves leaveallowances shifts)
+  )
+
+(setq org-taskjuggler-valid-task-attributes
+  '(account start note duration endbuffer endcredit end
+	    flags journalentry length limits maxend maxstart minend
+	    minstart period reference responsible scheduling
+	    startbuffer startcredit statusnote chargeset charge priority)
+)
+
+(setq org-taskjuggler-default-global-properties
+"
+shift s40 \"Part time shift\" {
+  workinghours wed, thu, fri off
+}
+
+leaves holiday \"National Day\" 2021-10-01 +5d,
+       holiday \"Dragon Boat Festival\" 2021-06-12 +3d,
+       holiday \"Mid-Autumn Festival\" 2021-09-19 +2d
+
+")
+#+END_COMMENT
