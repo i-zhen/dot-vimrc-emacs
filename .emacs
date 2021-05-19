@@ -362,11 +362,11 @@ ARGS specifies additional arguments that are passed to hlint."
 ;; (require 'org-plus-contrib)
 
 ;; you can find follow setting in ~/.emacs.d/elpa/org-plus-contrib-YYMMDD/ox-taskjuggler.el
+
 (setq org-taskjuggler-default-reports
   '("textreport report \"Plan\" {
   formats html
   header '== %title =='
-
   center -8<-
     [#Plan Plan] | [#Resource_Allocation Resource Allocation]
     ----
@@ -377,22 +377,42 @@ ARGS specifies additional arguments that are passed to hlint."
     <[report id=\"resourceGraph\"]>
   ->8-
 }
-
 # A traditional Gantt chart with a project overview.
 taskreport plan \"\" {
   headline \"Project Plan\"
-  columns bsi, name {width 400}, start, end, effort, chart {width 1000}
+  columns bsi, name {width 350}, start, end, effort, chart {scale week width 800}
   loadunit shortauto
   hideresource 1
 }
-
 # A graph showing resource allocation. It identifies whether each
 # resource is under- or over-allocated for.
 resourcereport resourceGraph \"\" {
   headline \"Resource Allocation Graph\"
-  columns no, name, effort, weekly {width 1000}
+  columns no, name, effort, annualleave,duties, complete, weekly {width 700}
   loadunit shortauto
   hidetask ~(isleaf() & isleaf_())
   sorttasks plan.start.up
 }")
 )
+
+(setq org-taskjuggler-default-global-properties
+"
+shift s40 \"Part time shift\" {
+  workinghours wed, thu, fri off
+}
+
+leaves holiday \"National Day\" 2021-10-01 +5d,
+       holiday \"Dragon Boat Festival\" 2021-06-12 +3d,
+       holiday \"Mid-Autumn Festival\" 2021-09-19 +2d
+
+")
+
+(setenv "LC_ALL" "zh_CN.UTF-8")
+(setenv "LANG" "zh_CN.UTF-8")
+(setenv "LANGUAGE" "zh_CN.UTF-8")
+(setenv "LC_COLLATE" "zh_CN.UTF-8")
+(setenv "LC_CTYPE" "zh_CN.UTF-8")
+(setenv "LC_MESSAGES" "zh_CN.UTF-8")
+(setenv "LC_MONETARY" "zh_CN.UTF-8")
+(setenv "LC_NUMERIC" "zh_CN.UTF-8")
+(setenv "LC_TIME" "zh_CN.UTF-8")
